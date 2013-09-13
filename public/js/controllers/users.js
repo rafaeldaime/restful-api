@@ -115,12 +115,14 @@ angular.module('mean.users').controller('UsersController', ['$scope', '$routePar
             
             // ADDING THE FRIENDS IN COMMON AT .commonFriends
             common = [];
-            for (var i=0; i<user.friends.length; i++){
-                for (var j=0; j<profile.friends.length; j++){
-                    //console.log(String(user.friends[i])+' == '+String(profile.friends[j]));
-                    if (String(user.friends[i]) == String(profile.friends[j])){
-                        common.push(String(user.friends[i]));
-                        break;
+            if (user){ // We don't know if USER is already ready
+                for (var i=0; i<user.friends.length; i++){
+                    for (var j=0; j<profile.friends.length; j++){
+                        //console.log(String(user.friends[i])+' == '+String(profile.friends[j]));
+                        if (String(user.friends[i]) == String(profile.friends[j])){
+                            common.push(String(user.friends[i]));
+                            break;
+                        }
                     }
                 }
             }

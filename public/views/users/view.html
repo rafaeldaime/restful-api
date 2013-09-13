@@ -23,7 +23,7 @@
         </div>
         
         <div data-ng-show="profile.itsYou">
-          <span> It's your profile! </span>
+          <h1> It's your profile! </h1>
           
           
           
@@ -31,7 +31,7 @@
                 enctype="multipart/form-data"
                 action="/users/{{profile._id}}/pic"
                 method="post">
-            <input type="file" id="userPhotoInput" name="userPhoto" />
+            <input id="uploadFormInput" type="file" id="userPhotoInput" name="userPhoto" />
           </form>
        
           <span id="status" />
@@ -57,13 +57,14 @@
         {{userId}}</a></span>
     </li>
     
-    
+    <div data-ng-hide="profile.itsYou">
     <h2 data-ng-hide="profile.commonFriends.length">YOU HAVE NO COMMON FRIENDS :(</h2>
     <h2 data-ng-show="profile.commonFriends.length">{{profile.commonFriends.length}} COMMON FRIENDS:</h2>
     <li data-ng-repeat="userId in profile.commonFriends">
         <span>userId: <a data-ng-href="#!/users/{{userId}}">
         {{userId}}</a></span>
     </li>
+    </div>
     
     <h2 data-ng-hide="profile.pics.length">NO PICS YET</h2>
     <h2 data-ng-show="profile.pics.length">PICS:</h2>
@@ -82,6 +83,8 @@
 
     
 <script type="text/javascript">
+$(function() {
+
 
 // THIS CODE IS JUST FOR IMG FORM.
 
@@ -92,17 +95,9 @@ function status(message) {
 status('Choose a file :)');
 
 
-// Check to see when a user has selected a file                                                                                                                
-var timerId;
-timerId = setInterval(function() {
-    if($('#userPhotoInput').val() !== '') {
-        clearInterval(timerId);
+var uploadFormInput = $("#uploadFormInput");
 
-        $('#uploadForm').submit();
-    }
-}, 500);
-
-$('#uploadForm').submit(function() {
+$('#uploadForm').change(function() {
     status('uploading the file ...');
 
     $(this).ajaxSubmit({
@@ -114,6 +109,9 @@ $('#uploadForm').submit(function() {
             console.log('You put a PIC!');
             console.log(res);
             $('#picList').append('<li><img src="'+res.src+'" /></li>')
+            
+            $('#uploadFormInput').replaceWith(uploadFormInput.clone());
+            status('Choose another file :)');
         }
     });
    
@@ -121,4 +119,7 @@ $('#uploadForm').submit(function() {
     // a page refresh - don't forget this
     return false;
   });
+
+
+});
 </script>
