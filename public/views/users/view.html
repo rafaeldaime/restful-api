@@ -1,0 +1,124 @@
+<section data-ng-controller="UsersController" data-ng-init="findOne()">
+			<span>Name: {{profile.name}}</span> /
+			<span>Username: <a data-ng-href="#!/users/{{profile._id}}">{{profile.username}}</a></span> /
+			<span>email: {{profile.email}}</span> /
+			<span>{{profile.created | date:'medium'}}</span>
+      
+      <div data-ng-hide="global.authenticated">
+        <a href="signin">Signin</a> to add this Friend.
+      </div>
+      <div data-ng-show="global.authenticated">
+        
+        <div data-ng-hide="profile.itsYou">
+        
+          <div data-ng-show="profile.yourFriend">
+            <span>He is your friend, 
+            <a href="" ng-click="removeFriend()">Undo the relashionship!</a></span>
+          </div>
+          <div data-ng-hide="profile.yourFriend">
+            <span>He is not your friend, 
+            <a href="" ng-click="addFriend()">Add as a Friend!</a></span>
+          </div>
+        
+        </div>
+        
+        <div data-ng-show="profile.itsYou">
+          <span> It's your profile! </span>
+          
+          
+          
+          <form id="uploadForm"
+                enctype="multipart/form-data"
+                action="/users/{{profile._id}}/pic"
+                method="post">
+            <input type="file" id="userPhotoInput" name="userPhoto" />
+          </form>
+       
+          <span id="status" />
+          
+          
+          
+
+          
+          
+          
+        </div>
+        
+        
+    
+  
+  
+      </div>
+    
+    <h2 data-ng-hide="profile.friends.length">I HAVE NO FRIENDS :(</h2>
+    <h2 data-ng-show="profile.friends.length">FRIENDS:</h2>
+    <li data-ng-repeat="userId in profile.friends">
+        <span>userId: <a data-ng-href="#!/users/{{userId}}">
+        {{userId}}</a></span>
+    </li>
+    
+    
+    <h2 data-ng-hide="profile.commonFriends.length">YOU HAVE NO COMMON FRIENDS :(</h2>
+    <h2 data-ng-show="profile.commonFriends.length">{{profile.commonFriends.length}} COMMON FRIENDS:</h2>
+    <li data-ng-repeat="userId in profile.commonFriends">
+        <span>userId: <a data-ng-href="#!/users/{{userId}}">
+        {{userId}}</a></span>
+    </li>
+    
+    <h2 data-ng-hide="profile.pics.length">NO PICS YET</h2>
+    <h2 data-ng-show="profile.pics.length">PICS:</h2>
+    <ul id="picList">
+        <li data-ng-repeat="name in profile.pics">
+            <img id="{{profile.name}} PIC" ng-src="pics/{{name}}" />
+        </li>
+    </ul>
+      
+      
+</section>
+
+
+
+
+
+    
+<script type="text/javascript">
+
+// THIS CODE IS JUST FOR IMG FORM.
+
+function status(message) {
+    $('#status').text(message);
+}
+
+status('Choose a file :)');
+
+
+// Check to see when a user has selected a file                                                                                                                
+var timerId;
+timerId = setInterval(function() {
+    if($('#userPhotoInput').val() !== '') {
+        clearInterval(timerId);
+
+        $('#uploadForm').submit();
+    }
+}, 500);
+
+$('#uploadForm').submit(function() {
+    status('uploading the file ...');
+
+    $(this).ajaxSubmit({
+        error: function(xhr) {
+            status('Error: ' + xhr.status);
+        },
+ 
+        success: function(res) {
+            console.log('You put a PIC!');
+            console.log(res);
+            $('#picList').append('<li><img src="'+res.src+'" /></li>')
+        }
+    });
+   
+    // Have to stop the form from submitting and causing
+    // a page refresh - don't forget this
+    return false;
+  });
+</script>

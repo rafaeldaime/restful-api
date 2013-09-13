@@ -1,0 +1,26 @@
+{
+    "db": "mongodb://localhost/rafadev-dev",
+    "app": {
+        "name": "API RESTful - RafaDev - Development"
+    },
+    "facebook": {
+        "clientID": "604456682923333",
+        "clientSecret": "9eacfd254f8d9702ff87da9cd06bb0d8",
+        "callbackURL": "http://localhost:3000/auth/facebook/callback"
+    },
+    "twitter": {
+        "clientID": "cLPmH3mAoj7Siulagx8r1w",
+        "clientSecret": "tDtFiDbKOfa2xApvubFjdpP3CZoGSKY1sESH4UqqYs",
+        "callbackURL": "http://localhost:3000/auth/twitter/callback"
+    },
+    "github": {
+        "clientID": "8adf32d54d19693f56c6",
+        "clientSecret": "6810459607763c761edd7dc4da2193e2448126b5",
+        "callbackURL": "http://localhost:3000/auth/github/callback"
+    },
+    "google": {
+        "clientID": "620271931508.apps.googleusercontent.com",
+        "clientSecret": "jaRYCYrtzCFgJXU8bdhZBA36",
+        "callbackURL": "http://localhost:3000/auth/google/callback"
+    }
+}
